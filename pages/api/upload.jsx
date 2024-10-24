@@ -14,6 +14,8 @@ export default async function handle(req, res) {
 
   if (files.file.length > 0) {
     console.log(files.file[0]);
+
+    // Try google upload
   }
 
   return res.json("ok");
