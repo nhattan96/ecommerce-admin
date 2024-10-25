@@ -1,14 +1,15 @@
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 export default function Nav() {
   const { pathname } = useRouter();
 
-  const inActiveLink = "flex gap-1 p-1";
+  const inActiveLink = "flex gap-1 p-2";
   const activeLink = inActiveLink + " bg-white text-blue-900 rounded-l-lg";
 
   return (
-    <aside className="text-white p-4 pr-0">
+    <aside className="flex flex-col text-white p-4 pr-0">
       <Link href={"/"} className="flex gap-1 mb-4 mr-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -68,6 +69,28 @@ export default function Nav() {
           Product
         </Link>
         <Link
+          href={"/categories"}
+          className={
+            pathname.includes("/categories") ? activeLink : inActiveLink
+          }
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+            />
+          </svg>
+          Categories
+        </Link>
+        <Link
           href={"/"}
           className={pathname.includes("/orders") ? activeLink : inActiveLink}
         >
@@ -82,7 +105,7 @@ export default function Nav() {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+              d="M8.242 5.992h12m-12 6.003H20.24m-12 5.999h12M4.117 7.495v-3.75H2.99m1.125 3.75H2.99m1.125 0H5.24m-1.92 2.577a1.125 1.125 0 1 1 1.591 1.59l-1.83 1.83h2.16M2.99 15.745h1.125a1.125 1.125 0 0 1 0 2.25H3.74m0-.002h.375a1.125 1.125 0 0 1 0 2.25H2.99"
             />
           </svg>
           Orders
@@ -113,7 +136,22 @@ export default function Nav() {
           Settings
         </Link>
       </nav>
-      <div className="flex">
+      <div className="flex gap-2 my-2 mt-auto">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
         <button onClick={() => signOut("google")}>Signout</button>
       </div>
     </aside>
