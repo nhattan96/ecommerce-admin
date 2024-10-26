@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import Layout from "./components/Layout";
 import axios from "axios";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function Categories() {
-  const [isEdit, setIsEdit] = useState(false);
+  const [editedData, setEditedData] = useState(undefined);
 
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [parentCategory, setParentCategory] = useState("");
+
+  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     fetchCategory();
@@ -21,24 +25,32 @@ export default function Categories() {
   const handleSaveCategory = async (e) => {
     e.preventDefault();
 
-    await axios.post("/api/categories", { name, parentCategory });
+    const data = { name, parentCategory };
+
+    if (editedData) {
+      await axios.put("/api/categories", { ...data, _id: editedData._id });
+    } else {
+      await axios.post("/api/categories", data);
+    }
 
     setName("");
     fetchCategory();
   };
 
   const handleEditCategory = (category) => {
-    setIsEdit(true);
+    setEditedData(category);
     setName(category.name);
-    setParentCategory(category.parent._id);
+    setParentCategory(category.parent?._id || 0);
   };
+
+  const handleDeleteCategory = () => {};
 
   return (
     <Layout>
       <h1>Categories</h1>
       <form onSubmit={handleSaveCategory}>
         <label htmlFor="category">
-          {isEdit ? "Edit" : "New"} Category name
+          {editedData ? "Edit" : "New"} Category name
         </label>
         <div className="flex gap-2">
           <input

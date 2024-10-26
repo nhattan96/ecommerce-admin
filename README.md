@@ -61,6 +61,10 @@ yarn add react-spinners --save
 yarn add sortablejs --save
 yarn add react-sortablejs --save
 
+<!-- alert popup -->
+
+yarn add sweetalert2 sweetalert2-react-content --save
+
 # Google Login / Config on google console.cloud
 
 For development:
