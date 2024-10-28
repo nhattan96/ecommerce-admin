@@ -25,7 +25,10 @@ export default function Categories() {
   const handleSaveCategory = async (e) => {
     e.preventDefault();
 
-    const data = { name, parentCategory };
+    const data = {
+      name,
+      parentCategory: parentCategory ? parentCategory : null,
+    };
 
     if (editedData) {
       await axios.put("/api/categories", { ...data, _id: editedData._id });
@@ -34,6 +37,7 @@ export default function Categories() {
     }
 
     setName("");
+    setParentCategory("");
     fetchCategory();
   };
 
@@ -43,7 +47,23 @@ export default function Categories() {
     setParentCategory(category.parent?._id || 0);
   };
 
-  const handleDeleteCategory = () => {};
+  const handleDeleteCategory = (category) => {
+    MySwal.fire({
+      title: "Are you sure?",
+      text: `Do you really want to delete ${category.name}`,
+      showCancelButton: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Yes, Delete!",
+      reverseButtons: true,
+      confirmButtonColor: "#d55",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await axios.delete("/api/categories?_id=" + category._id);
+        
+        fetchCategory();
+      }
+    });
+  };
 
   return (
     <Layout>
@@ -100,7 +120,12 @@ export default function Categories() {
                   >
                     Edit
                   </button>
-                  <button className="btn-red">Delete</button>
+                  <button
+                    onClick={() => handleDeleteCategory(category)}
+                    className="btn-red"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
