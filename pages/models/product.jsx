@@ -1,4 +1,4 @@
-import { model, models, Schema } from "mongoose";
+import { model, models, Schema, Types } from "mongoose";
 
 const ProductSchema = new Schema({
   title: {
@@ -15,6 +15,10 @@ const ProductSchema = new Schema({
       type: String,
     },
   ],
+  categoryId: {
+    type: Types.ObjectId,
+    ref: "Category",
+  },
 });
 
 export const Product = models.Product || model("Product", ProductSchema);
