@@ -10,6 +10,7 @@ export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [parentCategory, setParentCategory] = useState("");
+  const [properties, setProperties] = useState([]);
 
   const MySwal = withReactContent(Swal);
 
@@ -28,6 +29,10 @@ export default function Categories() {
     const data = {
       name,
       parentCategory: parentCategory ? parentCategory : null,
+      properties: properties.map((p) => ({
+        name: p.name,
+        values: p.values.split(","),
+      })),
     };
 
     if (editedData) {
@@ -36,15 +41,22 @@ export default function Categories() {
       await axios.post("/api/categories", data);
     }
 
+    resetForm();
+    fetchCategory();
+  };
+
+  const resetForm = () => {
+    setEditedData(undefined);
     setName("");
     setParentCategory("");
-    fetchCategory();
+    setProperties([]);
   };
 
   const handleEditCategory = (category) => {
     setEditedData(category);
     setName(category.name);
     setParentCategory(category.parent?._id || 0);
+    setProperties(category.properties);
   };
 
   const handleDeleteCategory = (category) => {
@@ -59,9 +71,41 @@ export default function Categories() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await axios.delete("/api/categories?_id=" + category._id);
-        
+
         fetchCategory();
       }
+    });
+  };
+
+  const handleAddProperty = () => {
+    setProperties((prevProperties) => [
+      ...prevProperties,
+      {
+        name: "",
+        values: "",
+      },
+    ]);
+  };
+
+  const handleRemoveProperty = (index) => {
+    setProperties((prevProperties) =>
+      prevProperties.filter((property, idx) => idx !== index)
+    );
+  };
+
+  const handlePropertyNameChange = (index, property, value) => {
+    setProperties((prevProperties) => {
+      const properties = [...prevProperties];
+      properties[index].name = value;
+      return properties;
+    });
+  };
+
+  const handlePropertyValuesChange = (index, property, value) => {
+    setProperties((prevProperties) => {
+      const properties = [...prevProperties];
+      properties[index].values = value;
+      return properties;
     });
   };
 
@@ -96,7 +140,63 @@ export default function Categories() {
                 </option>
               ))}
           </select>
-          <button className="btn-primary">Save</button>
+        </div>
+        <div>
+          <label className="block">Properties</label>
+          <button
+            onClick={handleAddProperty}
+            type="button"
+            className="btn-default text-sm mb-2"
+          >
+            Add new property
+          </button>
+
+          {Array.isArray(properties) &&
+            properties.length > 0 &&
+            properties.map((property, index) => (
+              <div key={index} className="flex gap-1 mb-2">
+                <input
+                  type="text"
+                  id={"N" + index}
+                  className="mb-0"
+                  onChange={(e) =>
+                    handlePropertyNameChange(index, property, e.target.value)
+                  }
+                  value={property.name}
+                  placeholder="values, comma separated"
+                />
+                <input
+                  type="text"
+                  id={"V" + index}
+                  className="mb-0"
+                  onChange={(e) =>
+                    handlePropertyValuesChange(index, property, e.target.value)
+                  }
+                  value={property.values}
+                  placeholder="values, comma separated"
+                />
+                <button
+                  onClick={() => handleRemoveProperty(index)}
+                  type="button"
+                  className="btn-red"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+
+          <div>
+            {editedData && (
+              <button
+                type="button"
+                onClick={resetForm}
+                className="btn-default mr-2"
+              >
+                Cancel
+              </button>
+            )}
+            <button className="btn-primary">Save</button>
+          </div>
         </div>
       </form>
       <table className="basic mt-2">
