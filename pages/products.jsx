@@ -26,6 +26,7 @@ export default function Products() {
         <thead>
           <tr>
             <td>Product name</td>
+            <td>Image</td>
             <td></td>
           </tr>
         </thead>
@@ -33,6 +34,15 @@ export default function Products() {
           {products.map((product) => (
             <tr key={product._id}>
               <td>{product.title}</td>
+              <td>
+                {product.images.length ? (
+                  <img
+                    className="w-24 m-auto"
+                    src={product?.images[0]}
+                    alt={product?.images[0]}
+                  />
+                ) : null}
+              </td>
               <td>
                 <Link href={"/products/edit/" + product._id}>
                   <svg
@@ -51,7 +61,10 @@ export default function Products() {
                   </svg>
                   Edit
                 </Link>
-                <Link className="btn-red" href={"/products/delete/" + product._id}>
+                <Link
+                  className="btn-red"
+                  href={"/products/delete/" + product._id}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
