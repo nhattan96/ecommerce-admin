@@ -20,6 +20,9 @@ const ProductSchema = new Schema(
       type: Types.ObjectId,
       ref: "Category",
     },
+    properties: {
+      type: Object,
+    },
   },
   { timestamps: true }
 );

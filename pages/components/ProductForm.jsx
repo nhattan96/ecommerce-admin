@@ -11,6 +11,7 @@ export default function ProductForm({
   price: existingPrice,
   images: existingImages,
   categoryId: existingCategory,
+  properties: existingProductProperties,
 }) {
   const router = useRouter();
 
@@ -21,6 +22,9 @@ export default function ProductForm({
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState(existingCategory || "");
+  const [productProperties, setProductProperties] = useState(
+    existingProductProperties || {}
+  );
 
   useEffect(() => {
     axios.get("/api/categories").then((res) => setCategories(res.data));
@@ -31,7 +35,14 @@ export default function ProductForm({
   const handleCreateProduct = async (e) => {
     e.preventDefault();
 
-    const data = { title, description, price, images, categoryId };
+    const data = {
+      title,
+      description,
+      price,
+      images,
+      categoryId,
+      properties: productProperties,
+    };
 
     if (_id) {
       await axios
@@ -70,9 +81,33 @@ export default function ProductForm({
     }
   };
 
+  const handleChangeProperty = (name, value) => {
+    setProductProperties((prev) => {
+      const newProp = { ...prev };
+      newProp[`${name}`] = value;
+
+      if (!value) {
+        delete newProp[`${name}`];
+      }
+
+      return newProp;
+    });
+  };
+
   const updateImagesOrder = (images) => {
     setImages(images);
   };
+
+  const propertiesOfCategory = [];
+
+  if (categories.length && categoryId) {
+    let category = categories.find((category) => category._id === categoryId);
+    console.log(category, "category");
+
+    if (category?.properties) {
+      propertiesOfCategory.push(...category.properties);
+    }
+  }
 
   return (
     <form onSubmit={handleCreateProduct}>
@@ -100,6 +135,28 @@ export default function ProductForm({
             </option>
           ))}
       </select>
+
+      {propertiesOfCategory.length > 0 &&
+        propertiesOfCategory.map((p) => (
+          <div key={p.name} className="">
+            <label>{p.name[0].toUpperCase() + p.name.substring(1)}</label>
+            <div>
+              <select
+                value={productProperties[p.name]}
+                onChange={(ev) => handleChangeProperty(p.name, ev.target.value)}
+              >
+                <option value="">
+                  Select {p.name[0].toUpperCase() + p.name.substring(1)}
+                </option>
+                {p.values.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        ))}
 
       <label htmlFor="photo">Photo</label>
       <div className="flex flex-wrap gap-2 items-center">
