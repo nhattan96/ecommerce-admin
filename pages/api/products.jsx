@@ -1,7 +1,16 @@
 import { Product } from "../models/product";
 import { mongooseConnect } from "../lib/mongoose";
+import { getSession } from "next-auth/react";
+import { IsAdminRequest } from "./auth/[...nextauth]";
 
 export default async function handle(req, res) {
+  const session = await getSession({ req });
+  if (!session || !IsAdminRequest(session?.user?.email)) {
+    res.status(401);
+    res.end();
+    throw "Not an Admin";
+  }
+
   const { method } = req;
 
   await mongooseConnect();

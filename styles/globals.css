@@ -17,6 +17,10 @@
   }
 } */
 
+.bg-primary {
+  background: #343131;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -48,7 +52,7 @@ label {
 }
 
 .btn-primary {
-  @apply bg-blue-900 text-white px-4 py-1 rounded-md;
+  @apply bg-[#205781] text-white px-4 py-1 rounded-md;
 }
 
 table.basic {
@@ -60,15 +64,15 @@ table.basic thead tr td {
 }
 
 table.basic tr td {
-  @apply border border-blue-200 p-1;
+  @apply border border-blue-100 p-1;
 }
 
 table.basic a {
-  @apply bg-blue-900 text-white px-4 rounded-md inline-flex mx-1 items-center gap-1 text-sm py-1;
+  @apply bg-[#205781] text-white px-4 rounded-md inline-flex mx-1 items-center gap-1 text-sm py-1;
 }
 
 table.basic a.btn-red {
-  @apply bg-red-800;
+  @apply bg-[#D35D6E];
 }
 
 .btn-red,
@@ -77,9 +81,14 @@ table.basic a.btn-red {
 }
 
 .btn-red {
-  @apply bg-red-800 text-white;
+  @apply bg-[#D35D6E] text-white;
 }
 
 .btn-default {
   @apply bg-gray-200;
+}
+
+.img-hover:hover {
+  transform: scale(1.5);
+  transition: ease-in-out 0.25s;
 }

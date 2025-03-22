@@ -2,14 +2,23 @@ import Link from "next/link";
 import Layout from "./components/Layout";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Products() {
+  const router = useRouter();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/products").then((res) => {
-      setProducts(res.data);
-    });
+    axios
+      .get("/api/products")
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          router.push("/notFound");
+        }
+      });
 
     return () => {};
   }, []);
@@ -18,11 +27,11 @@ export default function Products() {
     <Layout>
       <Link
         href={"/products/new"}
-        className="bg-blue-900 text-white rounded-md py-1 px-2"
+        className="bg-primary text-white rounded-md py-2 px-4"
       >
         Add new product
       </Link>
-      <table className="basic mt-2">
+      <table className="basic mt-4">
         <thead>
           <tr>
             <td>Product name</td>
@@ -30,14 +39,14 @@ export default function Products() {
             <td></td>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="">
           {products.map((product) => (
             <tr key={product._id}>
               <td>{product.title}</td>
-              <td>
+              <td className="overflow-hidden">
                 {product.images.length ? (
                   <img
-                    className="w-24 m-auto"
+                    className="m-auto object-contain max-w-12 max-h-12 img-hover"
                     src={product?.images[0]}
                     alt={product?.images[0]}
                   />

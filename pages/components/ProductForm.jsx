@@ -167,7 +167,7 @@ export default function ProductForm({
         >
           {!!images.length &&
             images.map((links) => (
-              <div key={links} className="h-24">
+              <div key={links} className="h-24 border border-gray-200 rounded-lg p-2 bg-gray-100">
                 <img src={links} alt="links" />
               </div>
             ))}
