@@ -221,7 +221,7 @@ export default function ProductForm({
 
       <button
         onClick={() => router.push("/products")}
-        type="submit"
+        type="button"
         className="btn-default mr-2"
       >
         Back
