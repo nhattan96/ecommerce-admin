@@ -67,10 +67,18 @@ yarn add sweetalert2 sweetalert2-react-content --save
 
 # Google Login / Config on google console.cloud
 
+<!-- Add client Google login local -->
+https://console.cloud.google.com/auth/clients
+Select Project
+Create client
+
 For development:
 http://localhost:3000/api/auth/callback/google
 
 For production:
 https://{YOUR_DOMAIN}/api/auth/callback/google
 
-Hi
+# MongoDb Login / Config
+Cluster --> Connect button --> Copy Connection string
+
+mongodb+srv://omega6192000:<db_password>@cluster0.fdfgq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

@@ -1,7 +1,6 @@
-import { Product } from "../models/product";
-import multiparty from "multiparty";
-import { google } from "googleapis";
 import fs from "fs";
+import { google } from "googleapis";
+import multiparty from "multiparty";
 
 export default async function handle(req, res) {
   const form = new multiparty.Form();

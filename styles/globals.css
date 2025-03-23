@@ -29,6 +29,7 @@ body {
 
 img {
   max-height: 100%;
+  border-radius: 5px;
 }
 
 input,
@@ -36,6 +37,16 @@ textarea,
 select {
   @apply border-2 border-gray-300 rounded-md px-1 w-full;
   @apply mb-2;
+}
+
+input,
+select,
+button {
+  @apply min-h-10;
+}
+
+textarea {
+  @apply min-h-32;
 }
 
 input:focus,

@@ -1,6 +1,6 @@
-import { Product } from "../models/product";
-import { mongooseConnect } from "../lib/mongoose";
 import { getSession } from "next-auth/react";
+import { mongooseConnect } from "../lib/mongoose";
+import { Product } from "../models/product";
 import { IsAdminRequest } from "./auth/[...nextauth]";
 
 export default async function handle(req, res) {
@@ -42,7 +42,7 @@ export default async function handle(req, res) {
   if (method === "PUT") {
     const { _id, title, description, price, images, categoryId, properties } =
       req.body;
-    console.log(req.body, "req.body");
+
     await Product.updateOne(
       { _id },
       { title, description, price, images, categoryId, properties }
