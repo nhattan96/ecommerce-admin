@@ -8,6 +8,8 @@ export default function Categories() {
   const [editedData, setEditedData] = useState(undefined);
 
   const [categories, setCategories] = useState([]);
+
+  // Fields
   const [name, setName] = useState("");
   const [parentCategory, setParentCategory] = useState("");
   const [properties, setProperties] = useState([]);
@@ -29,10 +31,12 @@ export default function Categories() {
     const data = {
       name,
       parentCategory: parentCategory ? parentCategory : null,
-      properties: properties.map((p) => ({
-        name: p.name,
-        values: p.values.split(","),
-      })),
+      properties:
+        properties &&
+        properties.map((p) => ({
+          name: p.name,
+          values: p.values.split(","),
+        })),
     };
 
     if (editedData) {
